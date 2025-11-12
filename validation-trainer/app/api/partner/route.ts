@@ -2,11 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { Scenario, ConversationMessage } from '@/types/validation';
 
+// Support for Kimi K2 and other providers via baseURL
+const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.KIMI_API_KEY || '';
+const baseURL = process.env.OPENAI_BASE_URL || process.env.KIMI_BASE_URL || undefined;
+
+// OpenRouter requires additional headers
+const isOpenRouter = baseURL?.includes('openrouter.ai');
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
+  apiKey,
+  ...(baseURL && { baseURL }),
+  ...(isOpenRouter && {
+    defaultHeaders: {
+      'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://validation-trainer.vercel.app',
+      'X-Title': 'Validation Trainer',
+    },
+  }),
 });
 
-const MODEL_NAME = process.env.OPENAI_MODEL || 'gpt-5';
+const MODEL_NAME = process.env.OPENAI_MODEL || process.env.KIMI_MODEL || 'gpt-5';
 
 // Analyze user's response quality to inform partner's reaction
 function analyzeValidationQuality(response: string, scenario: Scenario): {
@@ -208,6 +222,7 @@ Remember: Your responses should feel like a real person reacting to how well the
       stream: true, // Enable streaming
     };
 
+    // Apply temperature/presence_penalty for non-GPT-5 models (including Kimi)
     if (!MODEL_NAME.toLowerCase().startsWith('gpt-5')) {
       requestOptions.temperature = 0.7; // Reduced from 0.85 for faster, more consistent responses
       requestOptions.presence_penalty = 0.2; // Reduced from 0.3 for faster generation

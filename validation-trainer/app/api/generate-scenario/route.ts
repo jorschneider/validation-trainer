@@ -2,11 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { Scenario } from '@/types/validation';
 
+// Support for Kimi K2 and other providers via baseURL
+const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.KIMI_API_KEY || '';
+const baseURL = process.env.OPENAI_BASE_URL || process.env.KIMI_BASE_URL || undefined;
+const isOpenRouter = baseURL?.includes('openrouter.ai');
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
+  apiKey,
+  ...(baseURL && { baseURL }),
+  ...(isOpenRouter && {
+    defaultHeaders: {
+      'HTTP-Referer': process.env.NEXT_PUBLIC_SITE_URL || 'https://validation-trainer.vercel.app',
+      'X-Title': 'Validation Trainer',
+    },
+  }),
 });
 
-const MODEL_NAME = process.env.OPENAI_MODEL || 'gpt-5';
+const MODEL_NAME = process.env.OPENAI_MODEL || process.env.KIMI_MODEL || 'gpt-5';
 
 export async function POST(request: NextRequest) {
   try {
