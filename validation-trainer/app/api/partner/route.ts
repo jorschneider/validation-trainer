@@ -238,7 +238,9 @@ Remember: Your responses should feel like a real person reacting to how well the
         let fullResponse = '';
         
         try {
-          for await (const chunk of stream) {
+          // Type assertion for streaming response
+          const streamIterator = stream as AsyncIterable<any>;
+          for await (const chunk of streamIterator) {
             const content = chunk.choices[0]?.delta?.content || '';
             if (content) {
               fullResponse += content;
