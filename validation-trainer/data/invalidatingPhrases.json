@@ -1,0 +1,39 @@
+{
+  "phrases": [
+    "don't worry",
+    "you'll be fine",
+    "it could be worse",
+    "at least",
+    "you're being too sensitive",
+    "just let it go",
+    "it's not that big of a deal",
+    "stop complaining",
+    "cheer up",
+    "things will work out",
+    "you'll get over it",
+    "everyone goes through this",
+    "you're overreacting",
+    "it's not that bad",
+    "you should just",
+    "why don't you just",
+    "have you tried",
+    "here's what you need to do",
+    "you always",
+    "you never",
+    "you're wrong",
+    "that's not true",
+    "but",
+    "however"
+  ],
+  "patterns": [
+    "don't (worry|be|feel)",
+    "you'll (be fine|get over it|figure it out)",
+    "it (could|can) be worse",
+    "at least (you|it|we)",
+    "just (let it go|move on|get over it)",
+    "you (always|never)",
+    "stop (complaining|worrying|being)",
+    "that's not (true|that bad|a big deal)"
+  ]
+}
+

@@ -1,0 +1,204 @@
+{
+  "scenarios": [
+    {
+      "id": "toddler-meltdown-1",
+      "category": "stressful-day",
+      "title": "Toddler Meltdown at Whole Foods",
+      "description": "Your partner had to deal with a public tantrum at the Union Square Whole Foods",
+      "partnerOpening": "I'm so done with today. Our daughter had a complete meltdown in the middle of Whole Foods. She was screaming, throwing food, and everyone was staring at me. I felt like the worst mom ever.",
+      "emotions": ["embarrassed", "exhausted", "frustrated"],
+      "difficulty": "easy",
+      "idealResponse": "Oh man, that sounds so hard. Public tantrums are rough, especially when everyone's watching. You're not a bad mom - she's just 1.5, that's totally normal."
+    },
+    {
+      "id": "sleep-deprivation-1",
+      "category": "stressful-day",
+      "title": "Another Night of No Sleep",
+      "description": "Multiple nights of interrupted sleep are taking their toll",
+      "partnerOpening": "I can't do this anymore. She woke up four times last night. FOUR TIMES. I'm so tired I can barely think straight. I don't remember the last time I slept more than 3 hours in a row.",
+      "emotions": ["exhausted", "overwhelmed", "sad"],
+      "difficulty": "medium",
+      "idealResponse": "That's absolutely exhausting. Sleep deprivation is no joke - of course you're feeling overwhelmed. Four wake-ups is brutal."
+    },
+    {
+      "id": "work-conflict-1",
+      "category": "stressful-day",
+      "title": "Work Pressure with Daycare Dropoff",
+      "description": "Your partner is stressed about balancing work deadlines with toddler responsibilities",
+      "partnerOpening": "My boss scheduled a 9am meeting tomorrow but you know drop-off takes until 9:15 at least. I told them I have morning responsibilities but I don't think they get it. I'm so tired of feeling like I'm failing at both work and being a mom.",
+      "emotions": ["frustrated", "anxious", "overwhelmed"],
+      "difficulty": "medium",
+      "idealResponse": "That's so frustrating. You're trying to juggle both and neither side seems to understand the other. That feeling of failing at both must be really heavy."
+    },
+    {
+      "id": "apartment-chaos-1",
+      "category": "stressful-day",
+      "title": "Small Apartment Overwhelm",
+      "description": "The reality of NYC apartment living with a toddler is hitting hard",
+      "partnerOpening": "I can't stand this apartment anymore. There are toys everywhere, I can't keep anything clean for more than five minutes, and I feel like I'm going crazy being stuck in 900 square feet all day. I miss having space.",
+      "emotions": ["overwhelmed", "frustrated", "trapped"],
+      "difficulty": "easy",
+      "idealResponse": "That makes total sense. Living in a small space with a toddler is tough - you can't escape the mess and it feels like the walls are closing in."
+    },
+    {
+      "id": "social-isolation-1",
+      "category": "relationship-concerns",
+      "title": "Missing Adult Connection",
+      "description": "Your partner feels isolated and misses having real conversations",
+      "partnerOpening": "I feel like I haven't had a real conversation with anyone in weeks. It's just me and her all day, and then you come home exhausted. My friends without kids don't get it, and my mom friends are all too busy. I feel so lonely.",
+      "emotions": ["sad", "lonely", "isolated"],
+      "difficulty": "medium",
+      "idealResponse": "That's really tough. I can hear how lonely you're feeling. Going from regular adult interaction to being isolated with a toddler all day is a huge change."
+    },
+    {
+      "id": "date-night-excitement-1",
+      "category": "excitement-pride",
+      "title": "First Date Night in Months",
+      "description": "Your partner is excited about finally getting a date night scheduled",
+      "partnerOpening": "My mom agreed to watch her this Saturday! We can actually go out to dinner - like a real dinner where we sit and talk. I'm so excited. I can't remember the last time we did something just us.",
+      "emotions": ["excited", "hopeful", "happy"],
+      "difficulty": "easy",
+      "idealResponse": "That's amazing! I'm so excited too. It's been way too long since we've had time just for us. This is going to be great."
+    },
+    {
+      "id": "milestone-pride-1",
+      "category": "excitement-pride",
+      "title": "Daughter Hit a Milestone",
+      "description": "Your partner is proud and excited about their daughter's development",
+      "partnerOpening": "Oh my god, she said 'mama' today! Like, clearly and intentionally pointing at me. I know I'm probably being ridiculous but I literally cried. She's growing up so fast.",
+      "emotions": ["proud", "happy", "emotional"],
+      "difficulty": "easy",
+      "idealResponse": "That's not ridiculous at all! That's huge! Of course you cried - that's such a special moment. I wish I had been there to see it!"
+    },
+    {
+      "id": "subway-stress-1",
+      "category": "stressful-day",
+      "title": "Subway Nightmare with Stroller",
+      "description": "Had a terrible experience on the subway with the stroller",
+      "partnerOpening": "The subway was a nightmare today. The elevator was broken at Union Square again, so I had to carry her and fold the stroller down two flights of stairs. Then some guy yelled at me for taking up space during rush hour. I'm so over this city sometimes.",
+      "emotions": ["frustrated", "angry", "exhausted"],
+      "difficulty": "medium",
+      "idealResponse": "Ugh, that's so frustrating. Navigating the subway with a stroller is already hard enough without broken elevators and rude people. That guy was completely out of line."
+    },
+    {
+      "id": "body-insecurity-1",
+      "category": "insecurity-doubt",
+      "title": "Post-Baby Body Struggles",
+      "description": "Your partner is feeling insecure about their body post-pregnancy",
+      "partnerOpening": "I tried on my favorite jeans today and they don't fit. Nothing fits right anymore. I know it's only been 1.5 years but I feel like I'll never have my body back. I don't even recognize myself.",
+      "emotions": ["sad", "insecure", "frustrated"],
+      "difficulty": "hard",
+      "idealResponse": "That must be really hard. Your body went through so much creating and growing our daughter. That feeling of not recognizing yourself sounds really painful."
+    },
+    {
+      "id": "mom-guilt-1",
+      "category": "insecurity-doubt",
+      "title": "Working Mom Guilt",
+      "description": "Your partner feels guilty about being happy to go to work",
+      "partnerOpening": "I feel terrible saying this, but I was actually relieved to drop her off at daycare today. Like, happy to go to work and have adult conversations. What kind of mom feels that way? I should want to spend every moment with her.",
+      "emotions": ["guilty", "ashamed", "confused"],
+      "difficulty": "hard",
+      "idealResponse": "That doesn't make you a bad mom at all. Wanting adult time and mental stimulation is completely normal. You can love her and still need a break - those feelings aren't mutually exclusive."
+    },
+    {
+      "id": "parents-advice-1",
+      "category": "frustration-others",
+      "title": "Unsolicited Parenting Advice",
+      "description": "Someone gave unwanted parenting advice at the park",
+      "partnerOpening": "This woman at Union Square Park today told me I was 'doing it wrong' because I let her eat snacks on the ground. Like, excuse me? She doesn't even know us. I'm so sick of random people thinking they can judge my parenting.",
+      "emotions": ["angry", "hurt", "defensive"],
+      "difficulty": "medium",
+      "idealResponse": "That's so frustrating. Random strangers judging your parenting when they have no idea about your situation or your kid - that would make anyone angry."
+    },
+    {
+      "id": "relationship-disconnect-1",
+      "category": "relationship-concerns",
+      "title": "Feeling Disconnected",
+      "description": "Your partner feels like you're roommates managing a kid, not partners",
+      "partnerOpening": "I feel like we're just roommates managing childcare schedules. We barely talk about anything other than who's doing drop-off or what we need from Target. I miss us. I miss feeling connected to you.",
+      "emotions": ["sad", "lonely", "worried"],
+      "difficulty": "hard",
+      "idealResponse": "I hear you. That really resonates with me too. We have been in logistics mode for so long. I miss that connection too and I want to work on getting it back."
+    },
+    {
+      "id": "career-opportunity-1",
+      "category": "decision-making",
+      "title": "Job Offer Decision",
+      "description": "Your partner got a job offer but it would mean more travel",
+      "partnerOpening": "I got a job offer today. It's a big step up, way more money, but it would mean traveling maybe once a month. I don't know how we'd make that work with her. I'm excited about the opportunity but also terrified about the logistics.",
+      "emotions": ["excited", "anxious", "conflicted"],
+      "difficulty": "medium",
+      "idealResponse": "Wow, that's exciting! And I can totally see why you'd be anxious too. The opportunity sounds great but the travel logistics are a real concern."
+    },
+    {
+      "id": "friend-comparison-1",
+      "category": "insecurity-doubt",
+      "title": "Comparing to Other Moms",
+      "description": "Your partner is comparing themselves to other parents on social media",
+      "partnerOpening": "I was on Instagram and all these mom influencers have their lives so together. Their kids are clean, they're dressed cute, their apartments are spotless. And I'm over here in yesterday's clothes with spit-up on my shoulder. How do they do it?",
+      "emotions": ["inadequate", "jealous", "frustrated"],
+      "difficulty": "medium",
+      "idealResponse": "Social media is such a highlight reel though - it's not reality. You're comparing your behind-the-scenes to everyone else's edited final product. That would make anyone feel inadequate."
+    },
+    {
+      "id": "sick-toddler-work-1",
+      "category": "stressful-day",
+      "title": "Sick Kid, Big Work Meeting",
+      "description": "Toddler is sick and your partner has an important work commitment",
+      "partnerOpening": "She's running a fever and daycare won't take her. But I have that huge presentation tomorrow that I've been preparing for weeks. I can't miss it but I also can't leave her when she's sick. I don't know what to do.",
+      "emotions": ["anxious", "torn", "guilty"],
+      "difficulty": "medium",
+      "idealResponse": "That's such an impossible position to be in. You've worked so hard on that presentation, and she needs you when she's sick. No wonder you're feeling torn."
+    },
+    {
+      "id": "finances-stress-1",
+      "category": "stressful-day",
+      "title": "NYC Cost of Living Stress",
+      "description": "The reality of NYC expenses with a kid is overwhelming",
+      "partnerOpening": "I was looking at our budget today and between rent, daycare, and everything else... we're barely saving anything. Daycare alone is more than some people's rent. I don't know how we're supposed to save for her future or think about a bigger place when this city is so expensive.",
+      "emotions": ["anxious", "overwhelmed", "worried"],
+      "difficulty": "medium",
+      "idealResponse": "That's really stressful. NYC is absurdly expensive and adding childcare costs on top of that is overwhelming. It makes sense you're worried about the future."
+    },
+    {
+      "id": "in-laws-visit-1",
+      "category": "frustration-others",
+      "title": "Stressful In-Law Visit",
+      "description": "In-laws are visiting and commenting on parenting choices",
+      "partnerOpening": "Your mom made another comment today about how we're 'spoiling' her by picking her up when she cries. And she keeps rearranging things in the apartment like our system isn't good enough. I know she means well but it's making me feel like she thinks I'm doing everything wrong.",
+      "emotions": ["frustrated", "hurt", "defensive"],
+      "difficulty": "hard",
+      "idealResponse": "I can see why that would be frustrating and hurtful. Having someone in your space criticizing your parenting - even with good intentions - would make anyone feel defensive."
+    },
+    {
+      "id": "weather-trapped-1",
+      "category": "stressful-day",
+      "title": "Stuck Inside All Day",
+      "description": "Bad weather means trapped in small apartment with toddler",
+      "partnerOpening": "It's been raining for three days straight. We can't go to the park, she's going stir-crazy in the apartment, and I'm losing my mind. I tried to take her to the playground covered section but it was packed with other desperate parents. I need fresh air so badly.",
+      "emotions": ["trapped", "frustrated", "overwhelmed"],
+      "difficulty": "easy",
+      "idealResponse": "Being stuck inside with a toddler for days is so hard. She has all this energy and nowhere to put it, and you're both going stir-crazy. That sounds exhausting."
+    },
+    {
+      "id": "work-win-1",
+      "category": "excitement-pride",
+      "title": "Big Work Achievement",
+      "description": "Your partner accomplished something significant at work",
+      "partnerOpening": "I closed that deal! The one I've been working on for three months. My boss said it was one of the best pitches she's seen. I'm still shaking - I can't believe I pulled it off while juggling everything at home.",
+      "emotions": ["proud", "excited", "relieved"],
+      "difficulty": "easy",
+      "idealResponse": "That's incredible! You've been working so hard on that. You should be so proud - balancing everything and still crushing it at work is amazing. Tell me more about what happened!"
+    },
+    {
+      "id": "self-care-guilt-1",
+      "category": "insecurity-doubt",
+      "title": "Guilty About Self-Care",
+      "description": "Your partner feels guilty about wanting time for themselves",
+      "partnerOpening": "I was thinking about signing up for that yoga class on Saturday mornings, but that would mean you'd have to handle her solo and you work so hard all week. I feel selfish for even wanting that. But I'm drowning and need something just for me.",
+      "emotions": ["guilty", "torn", "exhausted"],
+      "difficulty": "medium",
+      "idealResponse": "You're not being selfish at all. You need to take care of yourself too - that's not optional. Of course you need something for yourself, that makes complete sense."
+    }
+  ]
+}
