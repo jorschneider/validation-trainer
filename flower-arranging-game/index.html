@@ -3,264 +3,741 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloom - Flowers from the Masters</title>
+    <title>Atelier - Arrange the Masters</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: system-ui, sans-serif; overflow: hidden; background: #111; }
-        #canvas { display: block; cursor: crosshair; }
 
-        .ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
-        .ui > * { pointer-events: auto; }
-
-        .logo { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 3px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
-
-        .masters { position: absolute; top: 16px; left: 16px; display: flex; gap: 8px; flex-wrap: wrap; max-width: 450px; }
-        .master-btn {
-            width: 60px; height: 60px; border: 3px solid transparent; border-radius: 8px;
-            background-size: cover; background-position: center; cursor: pointer;
-            transition: 0.2s; position: relative; overflow: hidden;
+        body {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: #1a1612;
+            min-height: 100vh;
+            color: #e8e0d5;
+            overflow: hidden;
         }
-        .master-btn:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
-        .master-btn.active { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
-        .master-btn span { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); color: #fff; font-size: 7px; padding: 2px; text-align: center; }
 
-        .flowers-panel {
-            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-            background: rgba(0,0,0,0.85); border-radius: 12px; padding: 12px; width: 150px;
+        .app {
+            display: flex;
+            height: 100vh;
         }
-        .panel-label { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 
-        .flower-crops { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
-        .flower-crop {
-            aspect-ratio: 1; border: 2px solid transparent; border-radius: 6px;
-            background-size: cover; background-position: center; cursor: pointer;
-            transition: 0.2s;
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(180deg, #252018 0%, #1a1612 100%);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 20px;
+            overflow-y: auto;
         }
-        .flower-crop:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
-        .flower-crop.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        .size-row { display: flex; align-items: center; gap: 8px; }
-        .size-slider { flex: 1; height: 4px; border-radius: 2px; background: #333; -webkit-appearance: none; }
-        .size-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; cursor: pointer; }
-        .size-val { color: #888; font-size: 11px; width: 30px; text-align: right; }
+        .logo {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: #f0e6d8;
+            margin-bottom: 6px;
+        }
 
-        .btns { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 20px; background: rgba(255,255,255,0.15); color: #fff; font-size: 12px; cursor: pointer; }
-        .btn:hover { background: rgba(255,255,255,0.25); }
-        .btn.primary { background: rgba(255,255,255,0.3); }
+        .tagline {
+            font-size: 12px;
+            font-style: italic;
+            color: #8a7a68;
+            margin-bottom: 28px;
+        }
 
-        .info { position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.8); padding: 10px 14px; border-radius: 8px; color: #fff; font-size: 11px; max-width: 200px; text-align: right; line-height: 1.3; }
-        .info b { display: block; font-size: 12px; }
+        .artist-section {
+            margin-bottom: 20px;
+        }
 
-        .loading { position: fixed; inset: 0; background: #111; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #fff; z-index: 1000; }
+        .artist-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .artist-thumb {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .artist-info h3 {
+            font-size: 13px;
+            font-weight: 400;
+            font-style: italic;
+            color: #c0b0a0;
+        }
+
+        .artist-info p {
+            font-size: 10px;
+            color: #6a5a48;
+        }
+
+        .flowers-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .flower-btn {
+            width: 58px;
+            height: 58px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            padding: 4px;
+            overflow: hidden;
+        }
+
+        .flower-btn canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .flower-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .flower-btn.active {
+            background: rgba(180,140,80,0.15);
+            border-color: #b48c50;
+            box-shadow: 0 0 15px rgba(180,140,80,0.25);
+        }
+
+        .controls {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .control-row {
+            margin-bottom: 16px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6a5a48;
+            margin-bottom: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 3px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #b48c50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: #a09080;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.08);
+            color: #e0d8c8;
+        }
+
+        .btn.primary {
+            background: rgba(180,140,80,0.2);
+            border-color: #b48c50;
+            color: #b48c50;
+        }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: radial-gradient(ellipse at center, #2a2420 0%, #1a1612 100%);
+        }
+
+        .canvas-frame {
+            background: linear-gradient(145deg, #3a3028, #2a2420);
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .canvas-inner {
+            background: #28221c;
+            padding: 4px;
+        }
+
+        #canvas {
+            display: block;
+            cursor: crosshair;
+        }
+
+        .help {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-style: italic;
+            color: #5a4a38;
+        }
+
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: #1a1612;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 1000;
+        }
+
         .loading.hidden { display: none; }
-        .loading-bar { width: 200px; height: 4px; background: #333; border-radius: 2px; overflow: hidden; }
-        .loading-fill { height: 100%; background: #fff; transition: width 0.3s; }
 
-        .hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.4); font-size: 11px; }
+        .loading-text { font-size: 14px; letter-spacing: 3px; color: #8a7a68; }
+
+        .loader {
+            width: 30px; height: 30px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: #b48c50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div class="loading" id="loading">
-        <div>Loading masterpieces...</div>
-        <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+        <div class="loader"></div>
+        <div class="loading-text">CUTTING FLOWERS FROM MASTERPIECES</div>
     </div>
 
-    <canvas id="canvas"></canvas>
+    <div class="app">
+        <div class="sidebar">
+            <div class="logo">ATELIER</div>
+            <div class="tagline">Flowers cut from the masters</div>
+            <div id="artistSections"></div>
 
-    <div class="ui">
-        <div class="logo">BLOOM</div>
-        <div class="masters" id="masters"></div>
-
-        <div class="flowers-panel">
-            <div class="panel-label">Flowers from painting</div>
-            <div class="flower-crops" id="flowerCrops"></div>
-            <div class="panel-label">Size</div>
-            <div class="size-row">
-                <input type="range" class="size-slider" id="sizeSlider" min="50" max="250" value="120">
-                <span class="size-val" id="sizeVal">120</span>
+            <div class="controls">
+                <div class="control-row">
+                    <div class="control-label">
+                        <span>Size</span>
+                        <span id="sizeVal">120</span>
+                    </div>
+                    <input type="range" class="slider" id="sizeSlider" min="60" max="250" value="120">
+                </div>
+                <div class="btn-row">
+                    <button class="btn" onclick="undo()">Undo</button>
+                    <button class="btn" id="flipBtn" onclick="toggleFlip()">Flip</button>
+                    <button class="btn" onclick="clearAll()">Clear</button>
+                </div>
+                <div class="btn-row" style="margin-top: 8px">
+                    <button class="btn primary" onclick="save()">Save Image</button>
+                </div>
             </div>
         </div>
 
-        <div class="hint">Click to place · Right-click to remove · Scroll to rotate</div>
-
-        <div class="btns">
-            <button class="btn" onclick="undo()">Undo</button>
-            <button class="btn" onclick="clearAll()">Clear</button>
-            <button class="btn primary" onclick="save()">Save</button>
+        <div class="canvas-container">
+            <div class="canvas-frame">
+                <div class="canvas-inner">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
         </div>
-
-        <div class="info" id="info"></div>
     </div>
+
+    <div class="help">Click to place · Scroll to rotate · Right-click to remove · Toggle Flip for mirror</div>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// Public domain paintings with crop regions for flowers
-// Crops are defined as [x%, y%, width%, height%] of the source image
-const MASTERS = {
-    monet: {
-        name: 'Claude Monet',
-        title: 'Water Lilies, 1906',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg',
-        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/200px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg',
-        bg: '#4a6b5a',
-        crops: [
-            { name: 'Lily 1', x: 0.15, y: 0.55, w: 0.22, h: 0.25 },
-            { name: 'Lily 2', x: 0.55, y: 0.45, w: 0.25, h: 0.28 },
-            { name: 'Lily 3', x: 0.35, y: 0.65, w: 0.20, h: 0.22 },
-            { name: 'Lily 4', x: 0.70, y: 0.60, w: 0.22, h: 0.25 },
-        ]
-    },
-    vangogh: {
-        name: 'Vincent van Gogh',
+// Paintings with hand-traced flower cutout paths
+// Paths are normalized coordinates [0-1] relative to image dimensions
+// Using flower-shaped paths with petal-like extensions for natural cutouts
+const PAINTINGS = [
+    {
+        artist: 'Vincent van Gogh',
         title: 'Sunflowers, 1888',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/4/46/Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg',
-        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg/150px-Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg',
-        bg: '#c4a44c',
-        crops: [
-            { name: 'Sunflower 1', x: 0.35, y: 0.08, w: 0.30, h: 0.22 },
-            { name: 'Sunflower 2', x: 0.15, y: 0.18, w: 0.28, h: 0.22 },
-            { name: 'Sunflower 3', x: 0.55, y: 0.20, w: 0.30, h: 0.24 },
-            { name: 'Sunflower 4', x: 0.30, y: 0.32, w: 0.26, h: 0.20 },
+        url: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg',
+        flowers: [
+            {
+                name: 'Golden Crown',
+                // Large sunflower at top center - flower-shaped path with petals
+                path: [
+                    [0.50, 0.05], [0.45, 0.06], [0.42, 0.04], [0.38, 0.07],
+                    [0.35, 0.05], [0.32, 0.09], [0.30, 0.08], [0.28, 0.12],
+                    [0.26, 0.15], [0.28, 0.18], [0.26, 0.21], [0.29, 0.24],
+                    [0.32, 0.26], [0.36, 0.25], [0.40, 0.27], [0.44, 0.26],
+                    [0.48, 0.28], [0.52, 0.28], [0.56, 0.26], [0.60, 0.27],
+                    [0.64, 0.25], [0.68, 0.26], [0.71, 0.24], [0.74, 0.21],
+                    [0.72, 0.18], [0.74, 0.15], [0.72, 0.12], [0.70, 0.08],
+                    [0.68, 0.09], [0.65, 0.05], [0.62, 0.07], [0.58, 0.04],
+                    [0.55, 0.06], [0.50, 0.05]
+                ]
+            },
+            {
+                name: 'Leaning Left',
+                // Sunflower leaning to the left side
+                path: [
+                    [0.22, 0.14], [0.18, 0.12], [0.14, 0.14], [0.11, 0.18],
+                    [0.10, 0.22], [0.12, 0.26], [0.10, 0.30], [0.14, 0.34],
+                    [0.18, 0.36], [0.24, 0.35], [0.29, 0.32], [0.32, 0.28],
+                    [0.33, 0.23], [0.31, 0.19], [0.28, 0.15], [0.22, 0.14]
+                ]
+            },
+            {
+                name: 'Right Bloom',
+                // Sunflower on the right
+                path: [
+                    [0.78, 0.12], [0.74, 0.10], [0.70, 0.12], [0.67, 0.16],
+                    [0.66, 0.21], [0.68, 0.26], [0.72, 0.30], [0.77, 0.31],
+                    [0.82, 0.29], [0.86, 0.25], [0.88, 0.20], [0.87, 0.15],
+                    [0.84, 0.11], [0.78, 0.12]
+                ]
+            },
+            {
+                name: 'Center Face',
+                // Central flower face
+                path: [
+                    [0.50, 0.30], [0.44, 0.32], [0.39, 0.36], [0.37, 0.42],
+                    [0.39, 0.48], [0.44, 0.52], [0.50, 0.53], [0.56, 0.52],
+                    [0.61, 0.48], [0.63, 0.42], [0.61, 0.36], [0.56, 0.32],
+                    [0.50, 0.30]
+                ]
+            },
+            {
+                name: 'Withered Bloom',
+                // Lower withered/drooping sunflower
+                path: [
+                    [0.32, 0.42], [0.26, 0.46], [0.22, 0.52], [0.24, 0.58],
+                    [0.28, 0.62], [0.35, 0.63], [0.42, 0.60], [0.46, 0.54],
+                    [0.44, 0.48], [0.38, 0.44], [0.32, 0.42]
+                ]
+            }
         ]
     },
-    klimt: {
-        name: 'Gustav Klimt',
-        title: 'Farm Garden, 1907',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg',
-        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg/150px-Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg',
-        bg: '#3d5a3d',
-        crops: [
-            { name: 'Sunflower', x: 0.35, y: 0.05, w: 0.30, h: 0.25 },
-            { name: 'Flowers 1', x: 0.05, y: 0.50, w: 0.30, h: 0.30 },
-            { name: 'Flowers 2', x: 0.50, y: 0.55, w: 0.30, h: 0.28 },
-            { name: 'Flowers 3', x: 0.25, y: 0.70, w: 0.28, h: 0.25 },
+    {
+        artist: 'Claude Monet',
+        title: 'Water Lilies, 1906',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg',
+        flowers: [
+            {
+                name: 'Red Lily',
+                // Red flower cluster near upper-left as described in research
+                path: [
+                    [0.18, 0.22], [0.13, 0.24], [0.10, 0.28], [0.09, 0.33],
+                    [0.11, 0.38], [0.16, 0.41], [0.22, 0.42], [0.27, 0.39],
+                    [0.30, 0.34], [0.29, 0.28], [0.25, 0.24], [0.18, 0.22]
+                ]
+            },
+            {
+                name: 'Right Cluster',
+                // Main lily cluster in right region
+                path: [
+                    [0.72, 0.35], [0.65, 0.38], [0.60, 0.44], [0.58, 0.52],
+                    [0.62, 0.60], [0.70, 0.64], [0.80, 0.62], [0.88, 0.56],
+                    [0.92, 0.48], [0.90, 0.40], [0.84, 0.36], [0.72, 0.35]
+                ]
+            },
+            {
+                name: 'Bottom Lilies',
+                // Bottom region lily cluster
+                path: [
+                    [0.25, 0.72], [0.18, 0.76], [0.14, 0.82], [0.16, 0.88],
+                    [0.24, 0.92], [0.36, 0.94], [0.48, 0.92], [0.56, 0.86],
+                    [0.54, 0.78], [0.46, 0.74], [0.36, 0.72], [0.25, 0.72]
+                ]
+            },
+            {
+                name: 'Pink Bloom',
+                // Single pink water lily flower
+                path: [
+                    [0.42, 0.48], [0.36, 0.50], [0.32, 0.55], [0.34, 0.61],
+                    [0.40, 0.65], [0.48, 0.66], [0.54, 0.62], [0.56, 0.56],
+                    [0.52, 0.50], [0.46, 0.48], [0.42, 0.48]
+                ]
+            }
         ]
     },
-    ruysch: {
-        name: 'Rachel Ruysch',
-        title: 'Flower Still Life, 1710',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Rachel_Ruysch_-_flower_still_life_-_1710.jpg',
-        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Rachel_Ruysch_-_flower_still_life_-_1710.jpg/150px-Rachel_Ruysch_-_flower_still_life_-_1710.jpg',
-        bg: '#1a140c',
-        crops: [
-            { name: 'Rose', x: 0.25, y: 0.15, w: 0.25, h: 0.18 },
-            { name: 'Tulip', x: 0.50, y: 0.10, w: 0.22, h: 0.20 },
-            { name: 'Peony', x: 0.35, y: 0.30, w: 0.28, h: 0.22 },
-            { name: 'Flowers', x: 0.15, y: 0.45, w: 0.30, h: 0.25 },
+    {
+        artist: 'Gustav Klimt',
+        title: 'Cottage Garden, 1907',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Klimt_bauerngarten.jpg',
+        flowers: [
+            {
+                name: 'Giant Sunflower',
+                // Klimt's sunflower at top - very decorative
+                path: [
+                    [0.50, 0.02], [0.42, 0.04], [0.36, 0.03], [0.30, 0.06],
+                    [0.26, 0.10], [0.24, 0.16], [0.26, 0.22], [0.30, 0.26],
+                    [0.36, 0.28], [0.42, 0.29], [0.50, 0.30], [0.58, 0.29],
+                    [0.64, 0.28], [0.70, 0.26], [0.74, 0.22], [0.76, 0.16],
+                    [0.74, 0.10], [0.70, 0.06], [0.64, 0.03], [0.58, 0.04],
+                    [0.50, 0.02]
+                ]
+            },
+            {
+                name: 'Red Poppies',
+                // Cluster of red poppies
+                path: [
+                    [0.20, 0.50], [0.12, 0.54], [0.08, 0.62], [0.10, 0.70],
+                    [0.18, 0.76], [0.28, 0.78], [0.38, 0.74], [0.44, 0.66],
+                    [0.42, 0.58], [0.34, 0.52], [0.20, 0.50]
+                ]
+            },
+            {
+                name: 'White Daisies',
+                // White flowers in middle area
+                path: [
+                    [0.48, 0.42], [0.40, 0.46], [0.36, 0.54], [0.38, 0.62],
+                    [0.46, 0.68], [0.56, 0.70], [0.66, 0.66], [0.70, 0.58],
+                    [0.68, 0.50], [0.60, 0.44], [0.48, 0.42]
+                ]
+            },
+            {
+                name: 'Purple Patch',
+                // Purple/blue flower cluster
+                path: [
+                    [0.72, 0.48], [0.64, 0.52], [0.60, 0.60], [0.62, 0.70],
+                    [0.70, 0.78], [0.82, 0.80], [0.92, 0.74], [0.96, 0.64],
+                    [0.92, 0.54], [0.82, 0.50], [0.72, 0.48]
+                ]
+            }
         ]
     },
-    redon: {
-        name: 'Odilon Redon',
-        title: 'Vase of Flowers, 1914',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg',
-        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg/150px-Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg',
-        bg: '#d8c8c0',
-        crops: [
-            { name: 'Blue flowers', x: 0.30, y: 0.08, w: 0.35, h: 0.25 },
-            { name: 'Orange', x: 0.20, y: 0.25, w: 0.28, h: 0.22 },
-            { name: 'Pink', x: 0.50, y: 0.30, w: 0.30, h: 0.25 },
-            { name: 'Mixed', x: 0.30, y: 0.45, w: 0.35, h: 0.28 },
+    {
+        artist: 'Vincent van Gogh',
+        title: 'Irises, 1889',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Irises-Vincent_van_Gogh.jpg',
+        flowers: [
+            {
+                name: 'Blue Iris Left',
+                // Tall iris on the left side
+                path: [
+                    [0.15, 0.18], [0.10, 0.22], [0.08, 0.28], [0.10, 0.36],
+                    [0.14, 0.44], [0.12, 0.52], [0.16, 0.58], [0.22, 0.56],
+                    [0.26, 0.48], [0.24, 0.40], [0.28, 0.32], [0.26, 0.24],
+                    [0.22, 0.18], [0.15, 0.18]
+                ]
+            },
+            {
+                name: 'Center Iris',
+                // Central iris bloom
+                path: [
+                    [0.42, 0.24], [0.35, 0.28], [0.32, 0.36], [0.35, 0.44],
+                    [0.40, 0.50], [0.48, 0.52], [0.55, 0.48], [0.58, 0.40],
+                    [0.56, 0.32], [0.50, 0.26], [0.42, 0.24]
+                ]
+            },
+            {
+                name: 'Right Iris',
+                // Iris on the right
+                path: [
+                    [0.68, 0.20], [0.62, 0.24], [0.58, 0.32], [0.60, 0.42],
+                    [0.66, 0.50], [0.74, 0.52], [0.82, 0.48], [0.86, 0.38],
+                    [0.84, 0.28], [0.78, 0.22], [0.68, 0.20]
+                ]
+            },
+            {
+                name: 'White Iris',
+                // The single white iris that stands out
+                path: [
+                    [0.24, 0.62], [0.18, 0.66], [0.16, 0.74], [0.20, 0.82],
+                    [0.28, 0.86], [0.38, 0.84], [0.44, 0.78], [0.42, 0.70],
+                    [0.36, 0.64], [0.24, 0.62]
+                ]
+            }
         ]
     }
-};
+];
 
-let currentMaster = 'monet';
-let masterImages = {};
-let cropCanvases = {}; // Pre-rendered crop canvases
-let selectedCrop = 0;
+let paintingImages = {};
+let flowerCutouts = [];
+let selectedFlower = 0;
 let size = 120;
 let rotation = 0;
+let flipped = false;
 let placed = [];
 let history = [];
 
-// Load and prepare all images
-async function loadImages() {
-    const total = Object.keys(MASTERS).length;
+// Cut out a flower using a traced path with smooth curves
+function cutOutFlower(img, path, padding = 0.03) {
+    // Find bounding box
+    let minX = 1, maxX = 0, minY = 1, maxY = 0;
+    path.forEach(([x, y]) => {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+    });
+
+    // Add padding
+    minX = Math.max(0, minX - padding);
+    maxX = Math.min(1, maxX + padding);
+    minY = Math.max(0, minY - padding);
+    maxY = Math.min(1, maxY + padding);
+
+    const srcX = minX * img.width;
+    const srcY = minY * img.height;
+    const srcW = (maxX - minX) * img.width;
+    const srcH = (maxY - minY) * img.height;
+
+    // Create cutout canvas
+    const cutoutSize = 320;
+    const scale = cutoutSize / Math.max(srcW, srcH);
+    const w = srcW * scale;
+    const h = srcH * scale;
+
+    const offCanvas = document.createElement('canvas');
+    offCanvas.width = cutoutSize;
+    offCanvas.height = cutoutSize;
+    const offCtx = offCanvas.getContext('2d');
+
+    // Center the cutout
+    const offsetX = (cutoutSize - w) / 2;
+    const offsetY = (cutoutSize - h) / 2;
+
+    // Convert path points to canvas coordinates
+    const points = path.map(([px, py]) => ({
+        x: ((px - minX) / (maxX - minX)) * w + offsetX,
+        y: ((py - minY) / (maxY - minY)) * h + offsetY
+    }));
+
+    // Draw smooth curved path using cardinal spline
+    offCtx.beginPath();
+
+    // Use quadratic curves through control points for smooth organic shape
+    if (points.length > 2) {
+        offCtx.moveTo(points[0].x, points[0].y);
+
+        for (let i = 0; i < points.length; i++) {
+            const p0 = points[(i - 1 + points.length) % points.length];
+            const p1 = points[i];
+            const p2 = points[(i + 1) % points.length];
+            const p3 = points[(i + 2) % points.length];
+
+            // Catmull-Rom to Bezier conversion for smooth curves
+            const tension = 0.5;
+            const cp1x = p1.x + (p2.x - p0.x) * tension / 3;
+            const cp1y = p1.y + (p2.y - p0.y) * tension / 3;
+            const cp2x = p2.x - (p3.x - p1.x) * tension / 3;
+            const cp2y = p2.y - (p3.y - p1.y) * tension / 3;
+
+            offCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+        }
+    }
+    offCtx.closePath();
+
+    // Create soft feathered edge mask
+    offCtx.save();
+
+    // First pass: draw the image clipped to path
+    offCtx.clip();
+    offCtx.drawImage(img, srcX, srcY, srcW, srcH, offsetX, offsetY, w, h);
+    offCtx.restore();
+
+    // Add subtle edge softening by drawing semi-transparent edge
+    offCtx.save();
+    offCtx.globalCompositeOperation = 'destination-out';
+
+    // Create feathered edge by drawing shrinking strokes
+    for (let blur = 6; blur > 0; blur--) {
+        offCtx.lineWidth = blur;
+        offCtx.strokeStyle = `rgba(0,0,0,${0.15 * (blur / 6)})`;
+
+        offCtx.beginPath();
+        if (points.length > 2) {
+            offCtx.moveTo(points[0].x, points[0].y);
+            for (let i = 0; i < points.length; i++) {
+                const p0 = points[(i - 1 + points.length) % points.length];
+                const p1 = points[i];
+                const p2 = points[(i + 1) % points.length];
+                const p3 = points[(i + 2) % points.length];
+                const tension = 0.5;
+                const cp1x = p1.x + (p2.x - p0.x) * tension / 3;
+                const cp1y = p1.y + (p2.y - p0.y) * tension / 3;
+                const cp2x = p2.x - (p3.x - p1.x) * tension / 3;
+                const cp2y = p2.y - (p3.y - p1.y) * tension / 3;
+                offCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+            }
+        }
+        offCtx.closePath();
+        offCtx.stroke();
+    }
+    offCtx.restore();
+
+    return offCanvas;
+}
+
+async function loadPaintings() {
+    const loadingEl = document.getElementById('loading');
     let loaded = 0;
 
-    for (const [key, master] of Object.entries(MASTERS)) {
+    for (const painting of PAINTINGS) {
         await new Promise(resolve => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = () => {
-                masterImages[key] = img;
-                // Pre-render crops
-                cropCanvases[key] = master.crops.map(crop => {
-                    const cropCanvas = document.createElement('canvas');
-                    const w = Math.floor(img.width * crop.w);
-                    const h = Math.floor(img.height * crop.h);
-                    cropCanvas.width = w;
-                    cropCanvas.height = h;
-                    const cropCtx = cropCanvas.getContext('2d');
-                    cropCtx.drawImage(img,
-                        Math.floor(img.width * crop.x), Math.floor(img.height * crop.y), w, h,
-                        0, 0, w, h);
-                    return cropCanvas;
+                paintingImages[painting.title] = img;
+
+                // Cut out each flower
+                painting.flowers.forEach(flower => {
+                    flowerCutouts.push({
+                        canvas: cutOutFlower(img, flower.path),
+                        name: flower.name,
+                        artist: painting.artist,
+                        title: painting.title,
+                        thumbUrl: painting.url
+                    });
                 });
+
                 loaded++;
-                document.getElementById('loadingFill').style.width = (loaded / total * 100) + '%';
                 resolve();
             };
             img.onerror = () => {
-                console.log('Failed:', key);
+                console.error('Failed:', painting.title);
                 loaded++;
                 resolve();
             };
-            img.src = master.img;
+            img.src = painting.url;
         });
     }
 
-    document.getElementById('loading').classList.add('hidden');
+    loadingEl.classList.add('hidden');
     init();
 }
 
+function drawVase(ctx, w, h) {
+    const vaseW = w * 0.26;
+    const vaseH = h * 0.36;
+    const vaseX = w / 2;
+    const vaseY = h - 8;
+
+    // Shadow
+    ctx.beginPath();
+    ctx.ellipse(vaseX, vaseY + 5, vaseW * 0.45, 12, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.fill();
+
+    // Vase
+    ctx.beginPath();
+    ctx.moveTo(vaseX - vaseW * 0.26, vaseY);
+    ctx.bezierCurveTo(vaseX - vaseW * 0.4, vaseY - vaseH * 0.25, vaseX - vaseW * 0.42, vaseY - vaseH * 0.6, vaseX - vaseW * 0.16, vaseY - vaseH * 0.85);
+    ctx.bezierCurveTo(vaseX - vaseW * 0.1, vaseY - vaseH * 0.95, vaseX - vaseW * 0.06, vaseY - vaseH, vaseX, vaseY - vaseH);
+    ctx.bezierCurveTo(vaseX + vaseW * 0.06, vaseY - vaseH, vaseX + vaseW * 0.1, vaseY - vaseH * 0.95, vaseX + vaseW * 0.16, vaseY - vaseH * 0.85);
+    ctx.bezierCurveTo(vaseX + vaseW * 0.42, vaseY - vaseH * 0.6, vaseX + vaseW * 0.4, vaseY - vaseH * 0.25, vaseX + vaseW * 0.26, vaseY);
+    ctx.closePath();
+
+    const grad = ctx.createLinearGradient(vaseX - vaseW/2, 0, vaseX + vaseW/2, 0);
+    grad.addColorStop(0, 'rgba(70,90,100,0.75)');
+    grad.addColorStop(0.25, 'rgba(110,140,150,0.55)');
+    grad.addColorStop(0.5, 'rgba(150,180,190,0.45)');
+    grad.addColorStop(0.75, 'rgba(110,140,150,0.55)');
+    grad.addColorStop(1, 'rgba(70,90,100,0.75)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Highlight
+    ctx.beginPath();
+    ctx.moveTo(vaseX - vaseW * 0.12, vaseY - vaseH * 0.88);
+    ctx.bezierCurveTo(vaseX - vaseW * 0.22, vaseY - vaseH * 0.5, vaseX - vaseW * 0.25, vaseY - vaseH * 0.25, vaseX - vaseW * 0.16, vaseY - vaseH * 0.08);
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Rim
+    ctx.beginPath();
+    ctx.ellipse(vaseX, vaseY - vaseH, vaseW * 0.09, 4, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(90,110,120,0.8)';
+    ctx.fill();
+}
+
 function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const container = document.querySelector('.canvas-container');
+    const maxW = container.clientWidth - 70;
+    const maxH = container.clientHeight - 70;
+    const s = Math.min(maxW, maxH, 620);
+    canvas.width = s;
+    canvas.height = s;
     redraw();
 }
 
 function redraw() {
-    // Background
-    ctx.fillStyle = MASTERS[currentMaster].bg;
+    // Warm background
+    const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    bg.addColorStop(0, '#e6d8c4');
+    bg.addColorStop(0.5, '#dcceb8');
+    bg.addColorStop(1, '#cec0aa');
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Add subtle texture
-    ctx.globalAlpha = 0.03;
-    for (let i = 0; i < 5000; i++) {
-        ctx.fillStyle = Math.random() > 0.5 ? '#fff' : '#000';
+    // Texture
+    ctx.globalAlpha = 0.025;
+    for (let i = 0; i < 2500; i++) {
+        ctx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
         ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
     }
     ctx.globalAlpha = 1;
 
-    // Draw placed flowers
+    // Draw flowers
     placed.forEach(p => {
-        const cropCanvas = cropCanvases[p.master]?.[p.cropIndex];
-        if (cropCanvas) {
+        const flower = flowerCutouts[p.flowerIndex];
+        if (flower && flower.canvas) {
             ctx.save();
             ctx.translate(p.x, p.y);
             ctx.rotate(p.rotation);
-            const scale = p.size / Math.max(cropCanvas.width, cropCanvas.height);
-            const w = cropCanvas.width * scale;
-            const h = cropCanvas.height * scale;
-            ctx.drawImage(cropCanvas, -w/2, -h/2, w, h);
+            if (p.flipped) ctx.scale(-1, 1);
+            const scale = p.size / flower.canvas.width;
+            const w = flower.canvas.width * scale;
+            const h = flower.canvas.height * scale;
+            ctx.drawImage(flower.canvas, -w/2, -h/2, w, h);
             ctx.restore();
         }
     });
+
+    drawVase(ctx, canvas.width, canvas.height);
 }
 
 function placeFlower(x, y) {
     history.push(JSON.stringify(placed));
-    placed.push({
-        master: currentMaster,
-        cropIndex: selectedCrop,
-        x, y,
-        size,
-        rotation
-    });
+    placed.push({ flowerIndex: selectedFlower, x, y, size, rotation, flipped });
     redraw();
 }
 
@@ -272,63 +749,86 @@ function undo() {
 }
 
 function clearAll() {
-    history.push(JSON.stringify(placed));
-    placed = [];
-    redraw();
+    if (placed.length) {
+        history.push(JSON.stringify(placed));
+        placed = [];
+        redraw();
+    }
+}
+
+function toggleFlip() {
+    flipped = !flipped;
+    const btn = document.getElementById('flipBtn');
+    btn.style.background = flipped ? 'rgba(180,140,80,0.2)' : 'transparent';
+    btn.style.borderColor = flipped ? '#b48c50' : 'rgba(255,255,255,0.15)';
 }
 
 function save() {
     const link = document.createElement('a');
-    link.download = `bloom-${currentMaster}.png`;
+    link.download = 'masters-arrangement.png';
     link.href = canvas.toDataURL();
     link.click();
-}
-
-function setMaster(key) {
-    currentMaster = key;
-    const m = MASTERS[key];
-
-    document.querySelectorAll('.master-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
-    document.getElementById('info').innerHTML = `<b>${m.name}</b>${m.title}`;
-
-    // Update flower crop buttons
-    updateCropButtons();
-    selectedCrop = 0;
-
-    redraw();
-}
-
-function updateCropButtons() {
-    const container = document.getElementById('flowerCrops');
-    container.innerHTML = '';
-
-    const crops = cropCanvases[currentMaster] || [];
-    crops.forEach((cropCanvas, i) => {
-        const btn = document.createElement('div');
-        btn.className = 'flower-crop' + (i === 0 ? ' active' : '');
-        btn.style.backgroundImage = `url(${cropCanvas.toDataURL()})`;
-        btn.onclick = () => {
-            document.querySelectorAll('.flower-crop').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedCrop = i;
-        };
-        container.appendChild(btn);
-    });
 }
 
 function init() {
     resize();
 
-    // Master buttons
-    const mastersDiv = document.getElementById('masters');
-    Object.entries(MASTERS).forEach(([key, m], i) => {
-        const btn = document.createElement('div');
-        btn.className = 'master-btn' + (i === 0 ? ' active' : '');
-        btn.dataset.key = key;
-        btn.style.backgroundImage = `url(${m.thumb})`;
-        btn.innerHTML = `<span>${m.name.split(' ').pop()}</span>`;
-        btn.onclick = () => setMaster(key);
-        mastersDiv.appendChild(btn);
+    const sectionsDiv = document.getElementById('artistSections');
+    let flowerIdx = 0;
+
+    // Group flowers by painting
+    const grouped = {};
+    flowerCutouts.forEach((f, i) => {
+        const key = f.title;
+        if (!grouped[key]) grouped[key] = { artist: f.artist, title: f.title, url: f.thumbUrl, flowers: [] };
+        grouped[key].flowers.push({ ...f, index: i });
+    });
+
+    Object.values(grouped).forEach(painting => {
+        const section = document.createElement('div');
+        section.className = 'artist-section';
+
+        const header = document.createElement('div');
+        header.className = 'artist-header';
+
+        const thumb = document.createElement('img');
+        thumb.className = 'artist-thumb';
+        thumb.src = painting.url;
+        header.appendChild(thumb);
+
+        const info = document.createElement('div');
+        info.className = 'artist-info';
+        info.innerHTML = `<h3>${painting.artist}</h3><p>${painting.title}</p>`;
+        header.appendChild(info);
+
+        section.appendChild(header);
+
+        const row = document.createElement('div');
+        row.className = 'flowers-row';
+
+        painting.flowers.forEach(flower => {
+            const btn = document.createElement('button');
+            btn.className = 'flower-btn' + (flower.index === 0 ? ' active' : '');
+            btn.title = flower.name;
+
+            const preview = document.createElement('canvas');
+            preview.width = 54;
+            preview.height = 54;
+            const pCtx = preview.getContext('2d');
+            pCtx.drawImage(flower.canvas, 0, 0, 54, 54);
+            btn.appendChild(preview);
+
+            btn.onclick = () => {
+                document.querySelectorAll('.flower-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedFlower = flower.index;
+            };
+
+            row.appendChild(btn);
+        });
+
+        section.appendChild(row);
+        sectionsDiv.appendChild(section);
     });
 
     // Size slider
@@ -340,12 +840,17 @@ function init() {
     };
 
     // Canvas events
-    canvas.onclick = e => placeFlower(e.clientX, e.clientY);
+    canvas.onclick = e => {
+        const rect = canvas.getBoundingClientRect();
+        placeFlower(e.clientX - rect.left, e.clientY - rect.top);
+    };
 
     canvas.oncontextmenu = e => {
         e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
         for (let i = placed.length - 1; i >= 0; i--) {
-            if (Math.hypot(placed[i].x - e.clientX, placed[i].y - e.clientY) < placed[i].size / 2) {
+            if (Math.hypot(placed[i].x - mx, placed[i].y - my) < placed[i].size / 2) {
                 history.push(JSON.stringify(placed));
                 placed.splice(i, 1);
                 redraw();
@@ -358,24 +863,10 @@ function init() {
         e.preventDefault();
         rotation += e.deltaY * 0.01;
     };
-
-    setMaster('monet');
-
-    // Place some starter flowers
-    setTimeout(() => {
-        const cx = canvas.width / 2, cy = canvas.height / 2;
-        size = 150;
-        selectedCrop = 0; placeFlower(cx - 100, cy - 50);
-        selectedCrop = 1; placeFlower(cx + 80, cy);
-        selectedCrop = 2; placeFlower(cx - 30, cy + 80);
-        size = 120;
-        selectedCrop = 0;
-        rotation = 0;
-    }, 100);
 }
 
 window.onresize = resize;
-loadImages();
+loadPaintings();
 </script>
 </body>
 </html>
