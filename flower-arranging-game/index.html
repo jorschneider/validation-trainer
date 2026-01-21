@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atelier - Arrange the Masters</title>
+    <title>Atelier 3D - Arrange the Masters</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
@@ -23,76 +23,76 @@
         }
 
         .sidebar {
-            width: 300px;
+            width: 280px;
             background: linear-gradient(180deg, #252018 0%, #1a1612 100%);
             border-right: 1px solid rgba(255,255,255,0.08);
             display: flex;
             flex-direction: column;
-            padding: 24px 20px;
+            padding: 20px 16px;
             overflow-y: auto;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 400;
             letter-spacing: 4px;
             color: #f0e6d8;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .tagline {
-            font-size: 12px;
+            font-size: 11px;
             font-style: italic;
             color: #8a7a68;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
         }
 
         .artist-section {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .artist-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .artist-thumb {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 4px;
             object-fit: cover;
             border: 1px solid rgba(255,255,255,0.15);
         }
 
         .artist-info h3 {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
             font-style: italic;
             color: #c0b0a0;
         }
 
         .artist-info p {
-            font-size: 10px;
+            font-size: 9px;
             color: #6a5a48;
         }
 
         .flowers-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
         .flower-btn {
-            width: 58px;
-            height: 58px;
+            width: 50px;
+            height: 50px;
             border: 2px solid transparent;
-            border-radius: 8px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.03);
             cursor: pointer;
             transition: all 0.25s ease;
-            padding: 4px;
+            padding: 3px;
             overflow: hidden;
         }
 
@@ -111,27 +111,27 @@
         .flower-btn.active {
             background: rgba(180,140,80,0.15);
             border-color: #b48c50;
-            box-shadow: 0 0 15px rgba(180,140,80,0.25);
+            box-shadow: 0 0 12px rgba(180,140,80,0.25);
         }
 
         .controls {
             margin-top: auto;
-            padding-top: 16px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255,255,255,0.08);
         }
 
         .control-row {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .control-label {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #6a5a48;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .slider {
@@ -144,8 +144,8 @@
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background: #b48c50;
             border-radius: 50%;
             cursor: pointer;
@@ -153,17 +153,17 @@
 
         .btn-row {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn {
             flex: 1;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid rgba(255,255,255,0.15);
             background: transparent;
             color: #a09080;
             font-family: inherit;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             border-radius: 4px;
         }
@@ -181,38 +181,25 @@
 
         .canvas-container {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
+            position: relative;
             background: radial-gradient(ellipse at center, #2a2420 0%, #1a1612 100%);
         }
 
-        .canvas-frame {
-            background: linear-gradient(145deg, #3a3028, #2a2420);
-            padding: 12px;
-            border-radius: 4px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .canvas-inner {
-            background: #28221c;
-            padding: 4px;
-        }
-
-        #canvas {
+        #threeCanvas {
             display: block;
-            cursor: crosshair;
+            width: 100%;
+            height: 100%;
         }
 
         .help {
             position: fixed;
-            bottom: 14px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 11px;
+            font-size: 10px;
             font-style: italic;
             color: #5a4a38;
+            text-align: center;
         }
 
         .loading {
@@ -223,16 +210,16 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
             z-index: 1000;
         }
 
         .loading.hidden { display: none; }
 
-        .loading-text { font-size: 14px; letter-spacing: 3px; color: #8a7a68; }
+        .loading-text { font-size: 12px; letter-spacing: 3px; color: #8a7a68; }
 
         .loader {
-            width: 30px; height: 30px;
+            width: 24px; height: 24px;
             border: 2px solid rgba(255,255,255,0.1);
             border-top-color: #b48c50;
             border-radius: 50%;
@@ -245,12 +232,12 @@
 <body>
     <div class="loading" id="loading">
         <div class="loader"></div>
-        <div class="loading-text">CUTTING FLOWERS FROM MASTERPIECES</div>
+        <div class="loading-text">PREPARING 3D ATELIER</div>
     </div>
 
     <div class="app">
         <div class="sidebar">
-            <div class="logo">ATELIER</div>
+            <div class="logo">ATELIER 3D</div>
             <div class="tagline">Flowers cut from the masters</div>
             <div id="artistSections"></div>
 
@@ -258,39 +245,37 @@
                 <div class="control-row">
                     <div class="control-label">
                         <span>Size</span>
-                        <span id="sizeVal">120</span>
+                        <span id="sizeVal">1.0</span>
                     </div>
-                    <input type="range" class="slider" id="sizeSlider" min="60" max="250" value="120">
+                    <input type="range" class="slider" id="sizeSlider" min="0.3" max="2.0" step="0.1" value="1.0">
+                </div>
+                <div class="control-row">
+                    <div class="control-label">
+                        <span>Height</span>
+                        <span id="heightVal">0</span>
+                    </div>
+                    <input type="range" class="slider" id="heightSlider" min="-2" max="5" step="0.2" value="2">
                 </div>
                 <div class="btn-row">
                     <button class="btn" onclick="undo()">Undo</button>
-                    <button class="btn" id="flipBtn" onclick="toggleFlip()">Flip</button>
                     <button class="btn" onclick="clearAll()">Clear</button>
                 </div>
-                <div class="btn-row" style="margin-top: 8px">
+                <div class="btn-row" style="margin-top: 6px">
                     <button class="btn primary" onclick="save()">Save Image</button>
                 </div>
             </div>
         </div>
 
-        <div class="canvas-container">
-            <div class="canvas-frame">
-                <div class="canvas-inner">
-                    <canvas id="canvas"></canvas>
-                </div>
-            </div>
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="threeCanvas"></canvas>
         </div>
     </div>
 
-    <div class="help">Click to place · Scroll to rotate · Right-click to remove · Toggle Flip for mirror</div>
+    <div class="help">Click to place flowers · Drag to rotate view · Scroll to zoom · Right-click to remove</div>
 
-<script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
 // Paintings with hand-traced flower cutout paths
-// Paths are normalized coordinates [0-1] relative to image dimensions
-// Using flower-shaped paths with petal-like extensions for natural cutouts
 const PAINTINGS = [
     {
         artist: 'Vincent van Gogh',
@@ -299,7 +284,6 @@ const PAINTINGS = [
         flowers: [
             {
                 name: 'Golden Crown',
-                // Large sunflower at top center - flower-shaped path with petals
                 path: [
                     [0.50, 0.05], [0.45, 0.06], [0.42, 0.04], [0.38, 0.07],
                     [0.35, 0.05], [0.32, 0.09], [0.30, 0.08], [0.28, 0.12],
@@ -314,7 +298,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Leaning Left',
-                // Sunflower leaning to the left side
                 path: [
                     [0.22, 0.14], [0.18, 0.12], [0.14, 0.14], [0.11, 0.18],
                     [0.10, 0.22], [0.12, 0.26], [0.10, 0.30], [0.14, 0.34],
@@ -324,7 +307,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Right Bloom',
-                // Sunflower on the right
                 path: [
                     [0.78, 0.12], [0.74, 0.10], [0.70, 0.12], [0.67, 0.16],
                     [0.66, 0.21], [0.68, 0.26], [0.72, 0.30], [0.77, 0.31],
@@ -334,21 +316,11 @@ const PAINTINGS = [
             },
             {
                 name: 'Center Face',
-                // Central flower face
                 path: [
                     [0.50, 0.30], [0.44, 0.32], [0.39, 0.36], [0.37, 0.42],
                     [0.39, 0.48], [0.44, 0.52], [0.50, 0.53], [0.56, 0.52],
                     [0.61, 0.48], [0.63, 0.42], [0.61, 0.36], [0.56, 0.32],
                     [0.50, 0.30]
-                ]
-            },
-            {
-                name: 'Withered Bloom',
-                // Lower withered/drooping sunflower
-                path: [
-                    [0.32, 0.42], [0.26, 0.46], [0.22, 0.52], [0.24, 0.58],
-                    [0.28, 0.62], [0.35, 0.63], [0.42, 0.60], [0.46, 0.54],
-                    [0.44, 0.48], [0.38, 0.44], [0.32, 0.42]
                 ]
             }
         ]
@@ -360,7 +332,6 @@ const PAINTINGS = [
         flowers: [
             {
                 name: 'Red Lily',
-                // Red flower cluster near upper-left as described in research
                 path: [
                     [0.18, 0.22], [0.13, 0.24], [0.10, 0.28], [0.09, 0.33],
                     [0.11, 0.38], [0.16, 0.41], [0.22, 0.42], [0.27, 0.39],
@@ -369,7 +340,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Right Cluster',
-                // Main lily cluster in right region
                 path: [
                     [0.72, 0.35], [0.65, 0.38], [0.60, 0.44], [0.58, 0.52],
                     [0.62, 0.60], [0.70, 0.64], [0.80, 0.62], [0.88, 0.56],
@@ -378,7 +348,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Bottom Lilies',
-                // Bottom region lily cluster
                 path: [
                     [0.25, 0.72], [0.18, 0.76], [0.14, 0.82], [0.16, 0.88],
                     [0.24, 0.92], [0.36, 0.94], [0.48, 0.92], [0.56, 0.86],
@@ -387,7 +356,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Pink Bloom',
-                // Single pink water lily flower
                 path: [
                     [0.42, 0.48], [0.36, 0.50], [0.32, 0.55], [0.34, 0.61],
                     [0.40, 0.65], [0.48, 0.66], [0.54, 0.62], [0.56, 0.56],
@@ -403,7 +371,6 @@ const PAINTINGS = [
         flowers: [
             {
                 name: 'Giant Sunflower',
-                // Klimt's sunflower at top - very decorative
                 path: [
                     [0.50, 0.02], [0.42, 0.04], [0.36, 0.03], [0.30, 0.06],
                     [0.26, 0.10], [0.24, 0.16], [0.26, 0.22], [0.30, 0.26],
@@ -415,7 +382,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Red Poppies',
-                // Cluster of red poppies
                 path: [
                     [0.20, 0.50], [0.12, 0.54], [0.08, 0.62], [0.10, 0.70],
                     [0.18, 0.76], [0.28, 0.78], [0.38, 0.74], [0.44, 0.66],
@@ -424,7 +390,6 @@ const PAINTINGS = [
             },
             {
                 name: 'White Daisies',
-                // White flowers in middle area
                 path: [
                     [0.48, 0.42], [0.40, 0.46], [0.36, 0.54], [0.38, 0.62],
                     [0.46, 0.68], [0.56, 0.70], [0.66, 0.66], [0.70, 0.58],
@@ -433,7 +398,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Purple Patch',
-                // Purple/blue flower cluster
                 path: [
                     [0.72, 0.48], [0.64, 0.52], [0.60, 0.60], [0.62, 0.70],
                     [0.70, 0.78], [0.82, 0.80], [0.92, 0.74], [0.96, 0.64],
@@ -449,7 +413,6 @@ const PAINTINGS = [
         flowers: [
             {
                 name: 'Blue Iris Left',
-                // Tall iris on the left side
                 path: [
                     [0.15, 0.18], [0.10, 0.22], [0.08, 0.28], [0.10, 0.36],
                     [0.14, 0.44], [0.12, 0.52], [0.16, 0.58], [0.22, 0.56],
@@ -459,7 +422,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Center Iris',
-                // Central iris bloom
                 path: [
                     [0.42, 0.24], [0.35, 0.28], [0.32, 0.36], [0.35, 0.44],
                     [0.40, 0.50], [0.48, 0.52], [0.55, 0.48], [0.58, 0.40],
@@ -468,7 +430,6 @@ const PAINTINGS = [
             },
             {
                 name: 'Right Iris',
-                // Iris on the right
                 path: [
                     [0.68, 0.20], [0.62, 0.24], [0.58, 0.32], [0.60, 0.42],
                     [0.66, 0.50], [0.74, 0.52], [0.82, 0.48], [0.86, 0.38],
@@ -477,7 +438,6 @@ const PAINTINGS = [
             },
             {
                 name: 'White Iris',
-                // The single white iris that stands out
                 path: [
                     [0.24, 0.62], [0.18, 0.66], [0.16, 0.74], [0.20, 0.82],
                     [0.28, 0.86], [0.38, 0.84], [0.44, 0.78], [0.42, 0.70],
@@ -488,18 +448,22 @@ const PAINTINGS = [
     }
 ];
 
-let paintingImages = {};
+// Three.js setup
+let scene, camera, renderer, raycaster, mouse;
+let vase, table;
 let flowerCutouts = [];
+let placedFlowers = [];
 let selectedFlower = 0;
-let size = 120;
-let rotation = 0;
-let flipped = false;
-let placed = [];
+let flowerSize = 1.0;
+let flowerHeight = 2;
 let history = [];
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let cameraAngle = 0;
+let cameraHeight = 3;
+let cameraDistance = 12;
 
-// Cut out a flower using a traced path with smooth curves
 function cutOutFlower(img, path, padding = 0.03) {
-    // Find bounding box
     let minX = 1, maxX = 0, minY = 1, maxY = 0;
     path.forEach(([x, y]) => {
         minX = Math.min(minX, x);
@@ -508,7 +472,6 @@ function cutOutFlower(img, path, padding = 0.03) {
         maxY = Math.max(maxY, y);
     });
 
-    // Add padding
     minX = Math.max(0, minX - padding);
     maxX = Math.min(1, maxX + padding);
     minY = Math.max(0, minY - padding);
@@ -519,8 +482,7 @@ function cutOutFlower(img, path, padding = 0.03) {
     const srcW = (maxX - minX) * img.width;
     const srcH = (maxY - minY) * img.height;
 
-    // Create cutout canvas
-    const cutoutSize = 320;
+    const cutoutSize = 512;
     const scale = cutoutSize / Math.max(srcW, srcH);
     const w = srcW * scale;
     const h = srcH * scale;
@@ -530,58 +492,44 @@ function cutOutFlower(img, path, padding = 0.03) {
     offCanvas.height = cutoutSize;
     const offCtx = offCanvas.getContext('2d');
 
-    // Center the cutout
     const offsetX = (cutoutSize - w) / 2;
     const offsetY = (cutoutSize - h) / 2;
 
-    // Convert path points to canvas coordinates
     const points = path.map(([px, py]) => ({
         x: ((px - minX) / (maxX - minX)) * w + offsetX,
         y: ((py - minY) / (maxY - minY)) * h + offsetY
     }));
 
-    // Draw smooth curved path using cardinal spline
+    // Draw smooth curved path
     offCtx.beginPath();
-
-    // Use quadratic curves through control points for smooth organic shape
     if (points.length > 2) {
         offCtx.moveTo(points[0].x, points[0].y);
-
         for (let i = 0; i < points.length; i++) {
             const p0 = points[(i - 1 + points.length) % points.length];
             const p1 = points[i];
             const p2 = points[(i + 1) % points.length];
             const p3 = points[(i + 2) % points.length];
-
-            // Catmull-Rom to Bezier conversion for smooth curves
             const tension = 0.5;
             const cp1x = p1.x + (p2.x - p0.x) * tension / 3;
             const cp1y = p1.y + (p2.y - p0.y) * tension / 3;
             const cp2x = p2.x - (p3.x - p1.x) * tension / 3;
             const cp2y = p2.y - (p3.y - p1.y) * tension / 3;
-
             offCtx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
         }
     }
     offCtx.closePath();
 
-    // Create soft feathered edge mask
     offCtx.save();
-
-    // First pass: draw the image clipped to path
     offCtx.clip();
     offCtx.drawImage(img, srcX, srcY, srcW, srcH, offsetX, offsetY, w, h);
     offCtx.restore();
 
-    // Add subtle edge softening by drawing semi-transparent edge
+    // Soft edge
     offCtx.save();
     offCtx.globalCompositeOperation = 'destination-out';
-
-    // Create feathered edge by drawing shrinking strokes
-    for (let blur = 6; blur > 0; blur--) {
+    for (let blur = 8; blur > 0; blur--) {
         offCtx.lineWidth = blur;
-        offCtx.strokeStyle = `rgba(0,0,0,${0.15 * (blur / 6)})`;
-
+        offCtx.strokeStyle = `rgba(0,0,0,${0.12 * (blur / 8)})`;
         offCtx.beginPath();
         if (points.length > 2) {
             offCtx.moveTo(points[0].x, points[0].y);
@@ -607,176 +555,357 @@ function cutOutFlower(img, path, padding = 0.03) {
 }
 
 async function loadPaintings() {
-    const loadingEl = document.getElementById('loading');
-    let loaded = 0;
-
     for (const painting of PAINTINGS) {
         await new Promise(resolve => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = () => {
-                paintingImages[painting.title] = img;
-
-                // Cut out each flower
                 painting.flowers.forEach(flower => {
+                    const canvas = cutOutFlower(img, flower.path);
                     flowerCutouts.push({
-                        canvas: cutOutFlower(img, flower.path),
+                        canvas,
                         name: flower.name,
                         artist: painting.artist,
                         title: painting.title,
                         thumbUrl: painting.url
                     });
                 });
-
-                loaded++;
                 resolve();
             };
-            img.onerror = () => {
-                console.error('Failed:', painting.title);
-                loaded++;
-                resolve();
-            };
+            img.onerror = () => resolve();
             img.src = painting.url;
         });
     }
-
-    loadingEl.classList.add('hidden');
-    init();
 }
 
-function drawVase(ctx, w, h) {
-    const vaseW = w * 0.26;
-    const vaseH = h * 0.36;
-    const vaseX = w / 2;
-    const vaseY = h - 8;
+function createVase() {
+    // Vase profile points
+    const points = [];
+    const profile = [
+        [0, 0], [0.8, 0.1], [1.2, 0.5], [1.4, 1.2], [1.3, 2.0],
+        [1.1, 2.8], [0.9, 3.4], [0.7, 3.8], [0.6, 4.0], [0.55, 4.1],
+        [0.5, 4.15], [0.52, 4.2], [0.6, 4.25]
+    ];
 
-    // Shadow
-    ctx.beginPath();
-    ctx.ellipse(vaseX, vaseY + 5, vaseW * 0.45, 12, 0, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0,0,0,0.15)';
-    ctx.fill();
-
-    // Vase
-    ctx.beginPath();
-    ctx.moveTo(vaseX - vaseW * 0.26, vaseY);
-    ctx.bezierCurveTo(vaseX - vaseW * 0.4, vaseY - vaseH * 0.25, vaseX - vaseW * 0.42, vaseY - vaseH * 0.6, vaseX - vaseW * 0.16, vaseY - vaseH * 0.85);
-    ctx.bezierCurveTo(vaseX - vaseW * 0.1, vaseY - vaseH * 0.95, vaseX - vaseW * 0.06, vaseY - vaseH, vaseX, vaseY - vaseH);
-    ctx.bezierCurveTo(vaseX + vaseW * 0.06, vaseY - vaseH, vaseX + vaseW * 0.1, vaseY - vaseH * 0.95, vaseX + vaseW * 0.16, vaseY - vaseH * 0.85);
-    ctx.bezierCurveTo(vaseX + vaseW * 0.42, vaseY - vaseH * 0.6, vaseX + vaseW * 0.4, vaseY - vaseH * 0.25, vaseX + vaseW * 0.26, vaseY);
-    ctx.closePath();
-
-    const grad = ctx.createLinearGradient(vaseX - vaseW/2, 0, vaseX + vaseW/2, 0);
-    grad.addColorStop(0, 'rgba(70,90,100,0.75)');
-    grad.addColorStop(0.25, 'rgba(110,140,150,0.55)');
-    grad.addColorStop(0.5, 'rgba(150,180,190,0.45)');
-    grad.addColorStop(0.75, 'rgba(110,140,150,0.55)');
-    grad.addColorStop(1, 'rgba(70,90,100,0.75)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    // Highlight
-    ctx.beginPath();
-    ctx.moveTo(vaseX - vaseW * 0.12, vaseY - vaseH * 0.88);
-    ctx.bezierCurveTo(vaseX - vaseW * 0.22, vaseY - vaseH * 0.5, vaseX - vaseW * 0.25, vaseY - vaseH * 0.25, vaseX - vaseW * 0.16, vaseY - vaseH * 0.08);
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Rim
-    ctx.beginPath();
-    ctx.ellipse(vaseX, vaseY - vaseH, vaseW * 0.09, 4, 0, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(90,110,120,0.8)';
-    ctx.fill();
-}
-
-function resize() {
-    const container = document.querySelector('.canvas-container');
-    const maxW = container.clientWidth - 70;
-    const maxH = container.clientHeight - 70;
-    const s = Math.min(maxW, maxH, 620);
-    canvas.width = s;
-    canvas.height = s;
-    redraw();
-}
-
-function redraw() {
-    // Warm background
-    const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    bg.addColorStop(0, '#e6d8c4');
-    bg.addColorStop(0.5, '#dcceb8');
-    bg.addColorStop(1, '#cec0aa');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Texture
-    ctx.globalAlpha = 0.025;
-    for (let i = 0; i < 2500; i++) {
-        ctx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
-        ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
-    }
-    ctx.globalAlpha = 1;
-
-    // Draw flowers
-    placed.forEach(p => {
-        const flower = flowerCutouts[p.flowerIndex];
-        if (flower && flower.canvas) {
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rotation);
-            if (p.flipped) ctx.scale(-1, 1);
-            const scale = p.size / flower.canvas.width;
-            const w = flower.canvas.width * scale;
-            const h = flower.canvas.height * scale;
-            ctx.drawImage(flower.canvas, -w/2, -h/2, w, h);
-            ctx.restore();
-        }
+    profile.forEach(([x, y]) => {
+        points.push(new THREE.Vector2(x, y - 2));
     });
 
-    drawVase(ctx, canvas.width, canvas.height);
+    const geometry = new THREE.LatheGeometry(points, 32);
+
+    // Glass material
+    const material = new THREE.MeshPhysicalMaterial({
+        color: 0x88aaaa,
+        metalness: 0.0,
+        roughness: 0.1,
+        transmission: 0.9,
+        thickness: 0.5,
+        transparent: true,
+        opacity: 0.6,
+        side: THREE.DoubleSide
+    });
+
+    vase = new THREE.Mesh(geometry, material);
+    vase.position.y = -1.5;
+    vase.castShadow = true;
+    vase.receiveShadow = true;
+    scene.add(vase);
 }
 
-function placeFlower(x, y) {
-    history.push(JSON.stringify(placed));
-    placed.push({ flowerIndex: selectedFlower, x, y, size, rotation, flipped });
-    redraw();
+function createTable() {
+    // Simple table surface
+    const geometry = new THREE.CylinderGeometry(6, 6, 0.3, 32);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x3a2820,
+        roughness: 0.8,
+        metalness: 0.1
+    });
+    table = new THREE.Mesh(geometry, material);
+    table.position.y = -3.65;
+    table.receiveShadow = true;
+    scene.add(table);
+}
+
+function createFlowerSprite(flowerIndex, position, size) {
+    const cutout = flowerCutouts[flowerIndex];
+    if (!cutout) return null;
+
+    const texture = new THREE.CanvasTexture(cutout.canvas);
+    texture.needsUpdate = true;
+
+    const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        alphaTest: 0.1
+    });
+
+    const sprite = new THREE.Sprite(material);
+    sprite.position.copy(position);
+    sprite.scale.set(size * 2, size * 2, 1);
+    sprite.userData = { flowerIndex, size };
+
+    return sprite;
+}
+
+function addStem(flowerSprite) {
+    // Create a curved stem from vase opening to flower
+    const startY = 0.8; // Top of vase
+    const endY = flowerSprite.position.y;
+    const endX = flowerSprite.position.x;
+    const endZ = flowerSprite.position.z;
+
+    const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, startY, 0),
+        new THREE.Vector3(endX * 0.3, startY + (endY - startY) * 0.3, endZ * 0.3),
+        new THREE.Vector3(endX * 0.7, startY + (endY - startY) * 0.7, endZ * 0.7),
+        new THREE.Vector3(endX, endY - flowerSprite.scale.y * 0.4, endZ)
+    ]);
+
+    const geometry = new THREE.TubeGeometry(curve, 20, 0.05, 8, false);
+    const material = new THREE.MeshStandardMaterial({
+        color: 0x3d5c3d,
+        roughness: 0.8
+    });
+
+    const stem = new THREE.Mesh(geometry, material);
+    stem.castShadow = true;
+    return stem;
+}
+
+function placeFlower(x, z) {
+    if (selectedFlower >= flowerCutouts.length) return;
+
+    const position = new THREE.Vector3(x, flowerHeight, z);
+    const sprite = createFlowerSprite(selectedFlower, position, flowerSize);
+    if (!sprite) return;
+
+    const stem = addStem(sprite);
+
+    const group = new THREE.Group();
+    group.add(sprite);
+    group.add(stem);
+    group.userData = { flowerIndex: selectedFlower, sprite, stem };
+
+    scene.add(group);
+
+    history.push([...placedFlowers.map(f => f.uuid)]);
+    placedFlowers.push(group);
 }
 
 function undo() {
-    if (history.length) {
-        placed = JSON.parse(history.pop());
-        redraw();
+    if (placedFlowers.length > 0) {
+        const removed = placedFlowers.pop();
+        scene.remove(removed);
     }
 }
 
 function clearAll() {
-    if (placed.length) {
-        history.push(JSON.stringify(placed));
-        placed = [];
-        redraw();
+    while (placedFlowers.length > 0) {
+        const removed = placedFlowers.pop();
+        scene.remove(removed);
     }
-}
-
-function toggleFlip() {
-    flipped = !flipped;
-    const btn = document.getElementById('flipBtn');
-    btn.style.background = flipped ? 'rgba(180,140,80,0.2)' : 'transparent';
-    btn.style.borderColor = flipped ? '#b48c50' : 'rgba(255,255,255,0.15)';
+    history = [];
 }
 
 function save() {
+    renderer.render(scene, camera);
     const link = document.createElement('a');
-    link.download = 'masters-arrangement.png';
-    link.href = canvas.toDataURL();
+    link.download = 'arrangement-3d.png';
+    link.href = renderer.domElement.toDataURL();
     link.click();
 }
 
-function init() {
-    resize();
+function initThree() {
+    const container = document.getElementById('canvasContainer');
+    const canvas = document.getElementById('threeCanvas');
 
+    // Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1612);
+
+    // Camera
+    camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    updateCameraPosition();
+
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xfff5e6, 0.6);
+    scene.add(ambient);
+
+    const mainLight = new THREE.DirectionalLight(0xfff8f0, 1.0);
+    mainLight.position.set(5, 10, 5);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 2048;
+    mainLight.shadow.mapSize.height = 2048;
+    mainLight.shadow.camera.near = 0.5;
+    mainLight.shadow.camera.far = 50;
+    mainLight.shadow.camera.left = -10;
+    mainLight.shadow.camera.right = 10;
+    mainLight.shadow.camera.top = 10;
+    mainLight.shadow.camera.bottom = -10;
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0xe8dcc8, 0.4);
+    fillLight.position.set(-5, 5, -5);
+    scene.add(fillLight);
+
+    // Raycaster for click detection
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
+    // Create scene objects
+    createVase();
+    createTable();
+
+    // Background gradient sphere
+    const bgGeom = new THREE.SphereGeometry(40, 32, 32);
+    const bgMat = new THREE.ShaderMaterial({
+        uniforms: {
+            topColor: { value: new THREE.Color(0x2a2420) },
+            bottomColor: { value: new THREE.Color(0x1a1612) }
+        },
+        vertexShader: `
+            varying vec3 vWorldPosition;
+            void main() {
+                vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                vWorldPosition = worldPosition.xyz;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform vec3 topColor;
+            uniform vec3 bottomColor;
+            varying vec3 vWorldPosition;
+            void main() {
+                float h = normalize(vWorldPosition).y * 0.5 + 0.5;
+                gl_FragColor = vec4(mix(bottomColor, topColor, h), 1.0);
+            }
+        `,
+        side: THREE.BackSide
+    });
+    const bgSphere = new THREE.Mesh(bgGeom, bgMat);
+    scene.add(bgSphere);
+
+    // Event listeners
+    canvas.addEventListener('mousedown', onMouseDown);
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('wheel', onWheel);
+    canvas.addEventListener('contextmenu', onRightClick);
+    window.addEventListener('resize', onResize);
+
+    animate();
+}
+
+function updateCameraPosition() {
+    camera.position.x = Math.sin(cameraAngle) * cameraDistance;
+    camera.position.z = Math.cos(cameraAngle) * cameraDistance;
+    camera.position.y = cameraHeight;
+    camera.lookAt(0, 1, 0);
+}
+
+function onMouseDown(e) {
+    if (e.button === 0) {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+}
+
+function onMouseMove(e) {
+    if (isDragging) {
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+
+        cameraAngle += deltaX * 0.01;
+        cameraHeight = Math.max(-2, Math.min(10, cameraHeight - deltaY * 0.05));
+
+        updateCameraPosition();
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+}
+
+function onMouseUp(e) {
+    if (e.button === 0 && isDragging) {
+        const moved = Math.abs(e.clientX - previousMousePosition.x) > 5 ||
+                      Math.abs(e.clientY - previousMousePosition.y) > 5;
+
+        if (!moved) {
+            // Click to place flower
+            const container = document.getElementById('canvasContainer');
+            const rect = container.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            // Create a placement plane at the flower height
+            const planeY = flowerHeight;
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -planeY);
+            const intersectPoint = new THREE.Vector3();
+
+            if (raycaster.ray.intersectPlane(plane, intersectPoint)) {
+                // Limit placement radius
+                const dist = Math.sqrt(intersectPoint.x ** 2 + intersectPoint.z ** 2);
+                if (dist < 4) {
+                    placeFlower(intersectPoint.x, intersectPoint.z);
+                }
+            }
+        }
+        isDragging = false;
+    }
+}
+
+function onWheel(e) {
+    e.preventDefault();
+    cameraDistance = Math.max(5, Math.min(25, cameraDistance + e.deltaY * 0.02));
+    updateCameraPosition();
+}
+
+function onRightClick(e) {
+    e.preventDefault();
+
+    const container = document.getElementById('canvasContainer');
+    const rect = container.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    // Check intersection with flower sprites
+    const sprites = placedFlowers.map(g => g.userData.sprite).filter(Boolean);
+    const intersects = raycaster.intersectObjects(sprites);
+
+    if (intersects.length > 0) {
+        const hitSprite = intersects[0].object;
+        const groupToRemove = placedFlowers.find(g => g.userData.sprite === hitSprite);
+        if (groupToRemove) {
+            scene.remove(groupToRemove);
+            placedFlowers = placedFlowers.filter(g => g !== groupToRemove);
+        }
+    }
+}
+
+function onResize() {
+    const container = document.getElementById('canvasContainer');
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+function buildUI() {
     const sectionsDiv = document.getElementById('artistSections');
-    let flowerIdx = 0;
 
-    // Group flowers by painting
     const grouped = {};
     flowerCutouts.forEach((f, i) => {
         const key = f.title;
@@ -812,10 +941,10 @@ function init() {
             btn.title = flower.name;
 
             const preview = document.createElement('canvas');
-            preview.width = 54;
-            preview.height = 54;
+            preview.width = 46;
+            preview.height = 46;
             const pCtx = preview.getContext('2d');
-            pCtx.drawImage(flower.canvas, 0, 0, 54, 54);
+            pCtx.drawImage(flower.canvas, 0, 0, 46, 46);
             btn.appendChild(preview);
 
             btn.onclick = () => {
@@ -835,38 +964,27 @@ function init() {
     const sizeSlider = document.getElementById('sizeSlider');
     const sizeVal = document.getElementById('sizeVal');
     sizeSlider.oninput = e => {
-        size = +e.target.value;
-        sizeVal.textContent = size;
+        flowerSize = +e.target.value;
+        sizeVal.textContent = flowerSize.toFixed(1);
     };
 
-    // Canvas events
-    canvas.onclick = e => {
-        const rect = canvas.getBoundingClientRect();
-        placeFlower(e.clientX - rect.left, e.clientY - rect.top);
-    };
-
-    canvas.oncontextmenu = e => {
-        e.preventDefault();
-        const rect = canvas.getBoundingClientRect();
-        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-        for (let i = placed.length - 1; i >= 0; i--) {
-            if (Math.hypot(placed[i].x - mx, placed[i].y - my) < placed[i].size / 2) {
-                history.push(JSON.stringify(placed));
-                placed.splice(i, 1);
-                redraw();
-                break;
-            }
-        }
-    };
-
-    canvas.onwheel = e => {
-        e.preventDefault();
-        rotation += e.deltaY * 0.01;
+    // Height slider
+    const heightSlider = document.getElementById('heightSlider');
+    const heightVal = document.getElementById('heightVal');
+    heightSlider.oninput = e => {
+        flowerHeight = +e.target.value;
+        heightVal.textContent = flowerHeight.toFixed(1);
     };
 }
 
-window.onresize = resize;
-loadPaintings();
-</script>
+async function init() {
+    await loadPaintings();
+    initThree();
+    buildUI();
+    document.getElementById('loading').classList.add('hidden');
+}
+
+init();
+    </script>
 </body>
 </html>
