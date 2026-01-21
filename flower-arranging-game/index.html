@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom - Flowers from the Masters</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; overflow: hidden; background: #111; }
+        #canvas { display: block; cursor: crosshair; }
+
+        .ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
+        .ui > * { pointer-events: auto; }
+
+        .logo { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 3px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+
+        .masters { position: absolute; top: 16px; left: 16px; display: flex; gap: 8px; flex-wrap: wrap; max-width: 450px; }
+        .master-btn {
+            width: 60px; height: 60px; border: 3px solid transparent; border-radius: 8px;
+            background-size: cover; background-position: center; cursor: pointer;
+            transition: 0.2s; position: relative; overflow: hidden;
+        }
+        .master-btn:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
+        .master-btn.active { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .master-btn span { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); color: #fff; font-size: 7px; padding: 2px; text-align: center; }
+
+        .flowers-panel {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.85); border-radius: 12px; padding: 12px; width: 150px;
+        }
+        .panel-label { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+        .flower-crops { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
+        .flower-crop {
+            aspect-ratio: 1; border: 2px solid transparent; border-radius: 6px;
+            background-size: cover; background-position: center; cursor: pointer;
+            transition: 0.2s;
+        }
+        .flower-crop:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
+        .flower-crop.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        .size-row { display: flex; align-items: center; gap: 8px; }
+        .size-slider { flex: 1; height: 4px; border-radius: 2px; background: #333; -webkit-appearance: none; }
+        .size-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; cursor: pointer; }
+        .size-val { color: #888; font-size: 11px; width: 30px; text-align: right; }
+
+        .btns { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 20px; background: rgba(255,255,255,0.15); color: #fff; font-size: 12px; cursor: pointer; }
+        .btn:hover { background: rgba(255,255,255,0.25); }
+        .btn.primary { background: rgba(255,255,255,0.3); }
+
+        .info { position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.8); padding: 10px 14px; border-radius: 8px; color: #fff; font-size: 11px; max-width: 200px; text-align: right; line-height: 1.3; }
+        .info b { display: block; font-size: 12px; }
+
+        .loading { position: fixed; inset: 0; background: #111; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #fff; z-index: 1000; }
+        .loading.hidden { display: none; }
+        .loading-bar { width: 200px; height: 4px; background: #333; border-radius: 2px; overflow: hidden; }
+        .loading-fill { height: 100%; background: #fff; transition: width 0.3s; }
+
+        .hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.4); font-size: 11px; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div>Loading masterpieces...</div>
+        <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="ui">
+        <div class="logo">BLOOM</div>
+        <div class="masters" id="masters"></div>
+
+        <div class="flowers-panel">
+            <div class="panel-label">Flowers from painting</div>
+            <div class="flower-crops" id="flowerCrops"></div>
+            <div class="panel-label">Size</div>
+            <div class="size-row">
+                <input type="range" class="size-slider" id="sizeSlider" min="50" max="250" value="120">
+                <span class="size-val" id="sizeVal">120</span>
+            </div>
+        </div>
+
+        <div class="hint">Click to place · Right-click to remove · Scroll to rotate</div>
+
+        <div class="btns">
+            <button class="btn" onclick="undo()">Undo</button>
+            <button class="btn" onclick="clearAll()">Clear</button>
+            <button class="btn primary" onclick="save()">Save</button>
+        </div>
+
+        <div class="info" id="info"></div>
+    </div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Public domain paintings with crop regions for flowers
+// Crops are defined as [x%, y%, width%, height%] of the source image
+const MASTERS = {
+    monet: {
+        name: 'Claude Monet',
+        title: 'Water Lilies, 1906',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg',
+        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg/200px-Claude_Monet_-_Water_Lilies_-_1906%2C_Ryerson.jpg',
+        bg: '#4a6b5a',
+        crops: [
+            { name: 'Lily 1', x: 0.15, y: 0.55, w: 0.22, h: 0.25 },
+            { name: 'Lily 2', x: 0.55, y: 0.45, w: 0.25, h: 0.28 },
+            { name: 'Lily 3', x: 0.35, y: 0.65, w: 0.20, h: 0.22 },
+            { name: 'Lily 4', x: 0.70, y: 0.60, w: 0.22, h: 0.25 },
+        ]
+    },
+    vangogh: {
+        name: 'Vincent van Gogh',
+        title: 'Sunflowers, 1888',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/4/46/Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg',
+        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg/150px-Vincent_van_Gogh_-_Sunflowers_-_VGM_F458.jpg',
+        bg: '#c4a44c',
+        crops: [
+            { name: 'Sunflower 1', x: 0.35, y: 0.08, w: 0.30, h: 0.22 },
+            { name: 'Sunflower 2', x: 0.15, y: 0.18, w: 0.28, h: 0.22 },
+            { name: 'Sunflower 3', x: 0.55, y: 0.20, w: 0.30, h: 0.24 },
+            { name: 'Sunflower 4', x: 0.30, y: 0.32, w: 0.26, h: 0.20 },
+        ]
+    },
+    klimt: {
+        name: 'Gustav Klimt',
+        title: 'Farm Garden, 1907',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg',
+        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg/150px-Gustav_Klimt_-_Bauerngarten_mit_Sonnenblumen_-_4806_-_%C3%96sterreichische_Galerie_Belvedere.jpg',
+        bg: '#3d5a3d',
+        crops: [
+            { name: 'Sunflower', x: 0.35, y: 0.05, w: 0.30, h: 0.25 },
+            { name: 'Flowers 1', x: 0.05, y: 0.50, w: 0.30, h: 0.30 },
+            { name: 'Flowers 2', x: 0.50, y: 0.55, w: 0.30, h: 0.28 },
+            { name: 'Flowers 3', x: 0.25, y: 0.70, w: 0.28, h: 0.25 },
+        ]
+    },
+    ruysch: {
+        name: 'Rachel Ruysch',
+        title: 'Flower Still Life, 1710',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Rachel_Ruysch_-_flower_still_life_-_1710.jpg',
+        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Rachel_Ruysch_-_flower_still_life_-_1710.jpg/150px-Rachel_Ruysch_-_flower_still_life_-_1710.jpg',
+        bg: '#1a140c',
+        crops: [
+            { name: 'Rose', x: 0.25, y: 0.15, w: 0.25, h: 0.18 },
+            { name: 'Tulip', x: 0.50, y: 0.10, w: 0.22, h: 0.20 },
+            { name: 'Peony', x: 0.35, y: 0.30, w: 0.28, h: 0.22 },
+            { name: 'Flowers', x: 0.15, y: 0.45, w: 0.30, h: 0.25 },
+        ]
+    },
+    redon: {
+        name: 'Odilon Redon',
+        title: 'Vase of Flowers, 1914',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg',
+        thumb: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg/150px-Odilon_Redon_-_Vase_of_Flowers_%28Pink_Background%29_-_Google_Art_Project.jpg',
+        bg: '#d8c8c0',
+        crops: [
+            { name: 'Blue flowers', x: 0.30, y: 0.08, w: 0.35, h: 0.25 },
+            { name: 'Orange', x: 0.20, y: 0.25, w: 0.28, h: 0.22 },
+            { name: 'Pink', x: 0.50, y: 0.30, w: 0.30, h: 0.25 },
+            { name: 'Mixed', x: 0.30, y: 0.45, w: 0.35, h: 0.28 },
+        ]
+    }
+};
+
+let currentMaster = 'monet';
+let masterImages = {};
+let cropCanvases = {}; // Pre-rendered crop canvases
+let selectedCrop = 0;
+let size = 120;
+let rotation = 0;
+let placed = [];
+let history = [];
+
+// Load and prepare all images
+async function loadImages() {
+    const total = Object.keys(MASTERS).length;
+    let loaded = 0;
+
+    for (const [key, master] of Object.entries(MASTERS)) {
+        await new Promise(resolve => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                masterImages[key] = img;
+                // Pre-render crops
+                cropCanvases[key] = master.crops.map(crop => {
+                    const cropCanvas = document.createElement('canvas');
+                    const w = Math.floor(img.width * crop.w);
+                    const h = Math.floor(img.height * crop.h);
+                    cropCanvas.width = w;
+                    cropCanvas.height = h;
+                    const cropCtx = cropCanvas.getContext('2d');
+                    cropCtx.drawImage(img,
+                        Math.floor(img.width * crop.x), Math.floor(img.height * crop.y), w, h,
+                        0, 0, w, h);
+                    return cropCanvas;
+                });
+                loaded++;
+                document.getElementById('loadingFill').style.width = (loaded / total * 100) + '%';
+                resolve();
+            };
+            img.onerror = () => {
+                console.log('Failed:', key);
+                loaded++;
+                resolve();
+            };
+            img.src = master.img;
+        });
+    }
+
+    document.getElementById('loading').classList.add('hidden');
+    init();
+}
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    redraw();
+}
+
+function redraw() {
+    // Background
+    ctx.fillStyle = MASTERS[currentMaster].bg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Add subtle texture
+    ctx.globalAlpha = 0.03;
+    for (let i = 0; i < 5000; i++) {
+        ctx.fillStyle = Math.random() > 0.5 ? '#fff' : '#000';
+        ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
+    }
+    ctx.globalAlpha = 1;
+
+    // Draw placed flowers
+    placed.forEach(p => {
+        const cropCanvas = cropCanvases[p.master]?.[p.cropIndex];
+        if (cropCanvas) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            const scale = p.size / Math.max(cropCanvas.width, cropCanvas.height);
+            const w = cropCanvas.width * scale;
+            const h = cropCanvas.height * scale;
+            ctx.drawImage(cropCanvas, -w/2, -h/2, w, h);
+            ctx.restore();
+        }
+    });
+}
+
+function placeFlower(x, y) {
+    history.push(JSON.stringify(placed));
+    placed.push({
+        master: currentMaster,
+        cropIndex: selectedCrop,
+        x, y,
+        size,
+        rotation
+    });
+    redraw();
+}
+
+function undo() {
+    if (history.length) {
+        placed = JSON.parse(history.pop());
+        redraw();
+    }
+}
+
+function clearAll() {
+    history.push(JSON.stringify(placed));
+    placed = [];
+    redraw();
+}
+
+function save() {
+    const link = document.createElement('a');
+    link.download = `bloom-${currentMaster}.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+function setMaster(key) {
+    currentMaster = key;
+    const m = MASTERS[key];
+
+    document.querySelectorAll('.master-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.getElementById('info').innerHTML = `<b>${m.name}</b>${m.title}`;
+
+    // Update flower crop buttons
+    updateCropButtons();
+    selectedCrop = 0;
+
+    redraw();
+}
+
+function updateCropButtons() {
+    const container = document.getElementById('flowerCrops');
+    container.innerHTML = '';
+
+    const crops = cropCanvases[currentMaster] || [];
+    crops.forEach((cropCanvas, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'flower-crop' + (i === 0 ? ' active' : '');
+        btn.style.backgroundImage = `url(${cropCanvas.toDataURL()})`;
+        btn.onclick = () => {
+            document.querySelectorAll('.flower-crop').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCrop = i;
+        };
+        container.appendChild(btn);
+    });
+}
+
+function init() {
+    resize();
+
+    // Master buttons
+    const mastersDiv = document.getElementById('masters');
+    Object.entries(MASTERS).forEach(([key, m], i) => {
+        const btn = document.createElement('div');
+        btn.className = 'master-btn' + (i === 0 ? ' active' : '');
+        btn.dataset.key = key;
+        btn.style.backgroundImage = `url(${m.thumb})`;
+        btn.innerHTML = `<span>${m.name.split(' ').pop()}</span>`;
+        btn.onclick = () => setMaster(key);
+        mastersDiv.appendChild(btn);
+    });
+
+    // Size slider
+    const sizeSlider = document.getElementById('sizeSlider');
+    const sizeVal = document.getElementById('sizeVal');
+    sizeSlider.oninput = e => {
+        size = +e.target.value;
+        sizeVal.textContent = size;
+    };
+
+    // Canvas events
+    canvas.onclick = e => placeFlower(e.clientX, e.clientY);
+
+    canvas.oncontextmenu = e => {
+        e.preventDefault();
+        for (let i = placed.length - 1; i >= 0; i--) {
+            if (Math.hypot(placed[i].x - e.clientX, placed[i].y - e.clientY) < placed[i].size / 2) {
+                history.push(JSON.stringify(placed));
+                placed.splice(i, 1);
+                redraw();
+                break;
+            }
+        }
+    };
+
+    canvas.onwheel = e => {
+        e.preventDefault();
+        rotation += e.deltaY * 0.01;
+    };
+
+    setMaster('monet');
+
+    // Place some starter flowers
+    setTimeout(() => {
+        const cx = canvas.width / 2, cy = canvas.height / 2;
+        size = 150;
+        selectedCrop = 0; placeFlower(cx - 100, cy - 50);
+        selectedCrop = 1; placeFlower(cx + 80, cy);
+        selectedCrop = 2; placeFlower(cx - 30, cy + 80);
+        size = 120;
+        selectedCrop = 0;
+        rotation = 0;
+    }, 100);
+}
+
+window.onresize = resize;
+loadImages();
+</script>
+</body>
+</html>
